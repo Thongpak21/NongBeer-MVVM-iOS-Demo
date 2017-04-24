@@ -1,0 +1,34 @@
+/* 
+  Localizable.strings
+  NongBeer
+
+  Created by Thongpak on 4/5/2560 BE.
+  Copyright © 2560 Thongpak. All rights reserved.
+*/
+
+
+"beer_add_to_order" = "Add to Order";
+"beer_service_error" = "Sorry, something went wrong. Please try again.";
+"beer_tryagain" = "Try again";
+
+
+"order_title" = "Order List";
+"order_amount" = "Amount";
+"order_total" = "Total";
+"order_confirm" = "Confirm Order";
+"order_empty" = "Your shopping cart is empty.";
+
+
+"map_title" = "Select your destination";
+"map_confirm" = "Confirm Destination";
+
+
+"success_title" = "Successful";
+"success_desc" = "We will deliver the beer to you as soon as possible.";
+"success_close" = "Close";
+
+
+"history_last_of_amount" = "bottles of beer";
+"history_at" = "at";
+"history_empty" = "Your order history is empty.";
+"history_title" = "Order history detail";
