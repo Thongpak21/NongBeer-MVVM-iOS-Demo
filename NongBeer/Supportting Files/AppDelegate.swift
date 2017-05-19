@@ -8,7 +8,7 @@
 
 import UIKit
 import GoogleMaps
-import Timberjack
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UITabBar.appearance().barTintColor = UIColor.white
         UITabBar.appearance().tintColor = UIColor.primary()
-        Timberjack.register()
         GMSServices.provideAPIKey("AIzaSyDy_lmnaIsAosXBlnpiXfRdtVuMn7m2scg")
         return true
     }
