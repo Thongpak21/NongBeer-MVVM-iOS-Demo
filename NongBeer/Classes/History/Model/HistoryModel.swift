@@ -37,13 +37,13 @@ class HistoryModel: BaseModel {
     }
 }
 
-extension HistoryModel: IGListDiffable {
+extension HistoryModel: ListDiffable {
     
     func diffIdentifier() -> NSObjectProtocol {
         return self
     }
     
-    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
         return isEqual(object)
     }
     
@@ -66,13 +66,13 @@ class HistoryDetailModel: BaseModel {
     }
 }
 
-extension HistoryDetailModel: IGListDiffable {
+extension HistoryDetailModel: ListDiffable {
     
     func diffIdentifier() -> NSObjectProtocol {
         return self
     }
     
-    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+    func isEqual(toDiffableObject object: ListDiffable?) -> Bool {
         return isEqual(object)
     }
     

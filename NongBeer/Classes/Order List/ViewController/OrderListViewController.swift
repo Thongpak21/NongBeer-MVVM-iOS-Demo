@@ -15,14 +15,14 @@ class OrderListViewController: BaseViewController {
     @IBOutlet weak var confirmOrderButton: BaseButton!
     @IBOutlet weak var totalPrice: UILabel!
     lazy var viewModel: OrderListViewModelProtocol = OrderListViewModel(delegate: self)
-    lazy var adapter: IGListAdapter = {
-        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
+    lazy var adapter: ListAdapter = {
+        return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
 
-    let collectionView: IGListCollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: UIScreen.main.bounds.width * 0.8, height: 120)
-        let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.clear
         return collectionView
     }()
@@ -92,18 +92,18 @@ class OrderListViewController: BaseViewController {
     
 }
 
-extension OrderListViewController: IGListAdapterDataSource {
-    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+extension OrderListViewController: ListAdapterDataSource {
+    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         return viewModel.order
     }
     
-    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         let sectionController = OrderListSectionViewController()
         sectionController.delegate = self
         return sectionController
     }
     
-    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+    func emptyView(for listAdapter: ListAdapter) -> UIView? {
         let emptyView = Bundle.main.loadNibNamed("EmptyOrderView", owner: nil, options: nil)!.first
         return emptyView as? UIView
     }

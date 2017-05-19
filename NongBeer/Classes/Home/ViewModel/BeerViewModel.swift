@@ -11,14 +11,14 @@ import IGListKit
 import EZSwiftExtensions
 protocol BeerViewModelProtocol {
     var listOrder: [BeerModel] {get set}
-    var beer: [IGListDiffable] {get set}
+    var beer: [ListDiffable] {get set}
     func getListBeerService()
     func getListBeerHandler() -> APIRequest.completionHandler
 }
 class BeerViewModel: BaseViewModel, BeerViewModelProtocol {
     var page: Int? = 0
     var listOrder = [BeerModel]()
-    var beer = [LoadingType.refresh.rawValue as IGListDiffable]
+    var beer = [LoadingType.refresh.rawValue as ListDiffable]
     func getListBeerService() {
         let router = Router.getListBeer(page: page!)
         _ = APIRequest.request(withRouter: router, withHandler: getListBeerHandler())

@@ -12,10 +12,10 @@ protocol OrderListSectionViewControllerDelegate: class {
     func removeOrder(id: String, section: Int)
     func updateAmount()
 }
-class OrderListSectionViewController: IGListSectionController, IGListSectionType {
+class OrderListSectionViewController: ListSectionController {
     var object: BeerModel?
     var amount: Int?
-    func numberOfItems() -> Int {
+    override func numberOfItems() -> Int {
         return 1
     }
     weak var delegate: OrderListSectionViewControllerDelegate?
@@ -26,12 +26,12 @@ class OrderListSectionViewController: IGListSectionController, IGListSectionType
         self.minimumLineSpacing = 5
     }
     
-    func sizeForItem(at index: Int) -> CGSize {
+    override func sizeForItem(at index: Int) -> CGSize {
         let width = collectionContext?.containerSize.width ?? 0
         return CGSize(width: width - 10, height: 120)
     }
     
-    func cellForItem(at index: Int) -> UICollectionViewCell {
+    override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext?.dequeueReusableCell(withNibName: OrderListCollectionViewCell.identifier, bundle: nil, for: self, at: index) as! OrderListCollectionViewCell
         cell.beerLabel.text = object?.name
         cell.priceLabel.text = object?.price?.toString
@@ -41,12 +41,12 @@ class OrderListSectionViewController: IGListSectionController, IGListSectionType
         return cell
     }
     
-    func didUpdate(to object: Any) {
+    override func didUpdate(to object: Any) {
         self.object = object as? BeerModel
         self.amount = self.object?.amount
     }
     
-    func didSelectItem(at index: Int) {
+    override func didSelectItem(at index: Int) {
         
     }
 }
@@ -54,12 +54,14 @@ class OrderListSectionViewController: IGListSectionController, IGListSectionType
 extension OrderListSectionViewController: OrderListCollectionViewCellDelegate {
     func updateAmount(amount: Int, cell: UICollectionViewCell) {
         self.object?.amount = amount
-        collectionContext?.reload(self)
+        collectionContext?.performBatch(animated: true, updates: { (context) in
+            context.reload(self)
+        }, completion: nil)
         delegate?.updateAmount()
     }
 
     func removeOrder(cell: UICollectionViewCell) {
-        let section = collectionContext?.section(for: self)
+        let section = collectionContext?.index(for: cell, sectionController: self)
         delegate?.removeOrder(id: (object?.id)!, section: section!)
     }
 }

@@ -9,13 +9,13 @@
 import Foundation
 import IGListKit
 protocol HistoryViewModelProtocol {
-    var history: [IGListDiffable] {get set}
+    var history: [ListDiffable] {get set}
     func getListHistoryService()
     func getListHistoryHandler() -> APIRequest.completionHandler
     var isPullToRefresh: Bool { get set }
 }
 class HistoryViewModel: BaseViewModel, HistoryViewModelProtocol {
-    var history = [LoadingType.refresh.rawValue as IGListDiffable]
+    var history = [LoadingType.refresh.rawValue as ListDiffable]
     var page: Int? = 0
     var isPullToRefresh = false
     func getListHistoryService() {

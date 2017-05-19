@@ -9,10 +9,10 @@
 import UIKit
 import IGListKit
 
-class HistoryDetailSectionController: IGListSectionController, IGListSectionType, IGListSupplementaryViewSource {
+class HistoryDetailSectionController: ListSectionController, ListSupplementaryViewSource {
     var object: HistoryModel!
     
-    func numberOfItems() -> Int {
+    override func numberOfItems() -> Int {
         return object.detail.count
     }
     
@@ -24,12 +24,12 @@ class HistoryDetailSectionController: IGListSectionController, IGListSectionType
         self.minimumLineSpacing = 5
     }
     
-    func sizeForItem(at index: Int) -> CGSize {
+    override func sizeForItem(at index: Int) -> CGSize {
         let width = collectionContext?.containerSize.width ?? 0
         return CGSize(width: width - 20, height: 60)
     }
     
-    func cellForItem(at index: Int) -> UICollectionViewCell {
+    override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext?.dequeueReusableCell(withNibName: HistoryCollectionViewCell.identifier, bundle: nil, for: self, at: index) as! HistoryCollectionViewCell
         cell.totalLabel.text = object.detail[index].amount?.toString
         cell.totalLabel.textColor = UIColor.blackAlpha()
@@ -53,10 +53,10 @@ class HistoryDetailSectionController: IGListSectionController, IGListSectionType
     }
     
     
-    func didUpdate(to object: Any) {
+    override func didUpdate(to object: Any) {
         self.object = object as? HistoryModel
     }
     
-    func didSelectItem(at index: Int) {
+    override func didSelectItem(at index: Int) {
     }
 }

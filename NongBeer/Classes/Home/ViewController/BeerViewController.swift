@@ -15,12 +15,12 @@ import SwiftEventBus
 class BeerViewController: BaseViewController {
     lazy var viewModel: BeerViewModelProtocol = BeerViewModel(delegate: self)
 
-    lazy var adapter: IGListAdapter = {
-        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
+    lazy var adapter: ListAdapter = {
+        return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
-    let collectionView: IGListCollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.clear
         return collectionView
     }()
@@ -90,12 +90,12 @@ class BeerViewController: BaseViewController {
 }
 
 
-extension BeerViewController: IGListAdapterDataSource {
-    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+extension BeerViewController: ListAdapterDataSource {
+    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         return self.viewModel.beer
     }
     
-    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
         case is String:
             return LoadingSectionController()
@@ -104,12 +104,12 @@ extension BeerViewController: IGListAdapterDataSource {
             sectionController.delegate = self
             return sectionController
         default:
-            return IGListSectionController()
+            return ListSectionController()
         }
 
     }
 
-    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+    func emptyView(for listAdapter: ListAdapter) -> UIView? {
         let nibView = Bundle.main.loadNibNamed("EmptyView", owner: nil, options: nil)!.first as! EmptyView
         nibView.delegate = self
         return nibView
@@ -140,7 +140,7 @@ extension BeerViewController: UIScrollViewDelegate, EmptyViewDelegate {
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
         let nextBeerAvailable = (self.viewModel.beer as? [BeerModel])?.last?.nextBeerAvailable
         if nextBeerAvailable == true && distance < 200 {
-            self.viewModel.beer.append(LoadingType.loadmore.rawValue as IGListDiffable)
+            self.viewModel.beer.append(LoadingType.loadmore.rawValue as ListDiffable)
             self.viewModel.getListBeerService()
             adapter.performUpdates(animated: true, completion: nil)
         }

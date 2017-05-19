@@ -16,9 +16,9 @@ protocol BeerSectionControllerDelegate: class {
     func addOrder(item: BeerModel?)
     func removeOrder(item: BeerModel?)
 }
-class BeerSectionController: IGListSectionController, IGListSectionType {
+class BeerSectionController: ListSectionController {
     var object: BeerModel?
-    func numberOfItems() -> Int {
+    override func numberOfItems() -> Int {
         return (object?.beerList.count)!
     }
     weak var delegate: BeerSectionControllerDelegate?
@@ -29,13 +29,13 @@ class BeerSectionController: IGListSectionController, IGListSectionType {
         self.minimumLineSpacing = 8
     }
     
-    func sizeForItem(at index: Int) -> CGSize {
+    override func sizeForItem(at index: Int) -> CGSize {
         let width = collectionContext?.containerSize.width ?? 0
         let itemSize = ceil(width / 2)
         return CGSize(width: itemSize - 14, height: 200)
     }
     
-    func cellForItem(at index: Int) -> UICollectionViewCell {
+    override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext?.dequeueReusableCell(withNibName: BeerCollectionViewCell.identifier, bundle: nil, for: self, at: index) as! BeerCollectionViewCell
         cell.beerLabel.text = object?.beerList[index].name
         cell.volumeLabel.text = object?.beerList[index].volume
@@ -54,11 +54,11 @@ class BeerSectionController: IGListSectionController, IGListSectionType {
         return cell
     }
     
-    func didUpdate(to object: Any) {
+    override func didUpdate(to object: Any) {
         self.object = object as? BeerModel
     }
     
-    func didSelectItem(at index: Int) {
+    override func didSelectItem(at index: Int) {
         
     }
 }
@@ -74,6 +74,9 @@ extension BeerSectionController: FirstCollectionViewCellDelegate {
             self.object?.beerList[index!].isAddtoCart = true
             self.delegate?.addOrder(item: object?.beerList[index!])
         }
-        collectionContext?.reload(in: self, at: IndexSet(integer: index!))
+        collectionContext?.performBatch(animated: true, updates: { (context) in
+            context.reload(in: self, at: IndexSet(integer: index!))
+        }, completion: nil)
+//        collectionContext?.reload(in: self, at: IndexSet(integer: index!))
     }
 }

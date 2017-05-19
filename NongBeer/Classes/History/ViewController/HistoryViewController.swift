@@ -9,14 +9,14 @@
 import UIKit
 import IGListKit
 class HistoryViewController: BaseViewController {
-    lazy var adapter: IGListAdapter = {
-        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
+    lazy var adapter: ListAdapter = {
+        return ListAdapter(updater: ListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
     lazy var viewModel: HistoryViewModelProtocol = HistoryViewModel(delegate: self)
-    let collectionView: IGListCollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: 100, height: 60)
-        let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.clear
         return collectionView
     }()
@@ -57,23 +57,23 @@ class HistoryViewController: BaseViewController {
 }
 
 
-extension HistoryViewController: IGListAdapterDataSource {
-    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+extension HistoryViewController: ListAdapterDataSource {
+    func objects(for listAdapter: ListAdapter) -> [ListDiffable] {
         return self.viewModel.history
     }
     
-    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+    func listAdapter(_ listAdapter: ListAdapter, sectionControllerFor object: Any) -> ListSectionController {
         switch object {
         case is String:
             return LoadingSectionController()
         case is HistoryModel:
             return HistorySectionController()
         default:
-            return IGListSectionController()
+            return ListSectionController()
         }
     }
     
-    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+    func emptyView(for listAdapter: ListAdapter) -> UIView? {
         let nibView = Bundle.main.loadNibNamed("EmptyView", owner: nil, options: nil)!.first as! EmptyView
         return nibView
     }
@@ -85,7 +85,7 @@ extension HistoryViewController: UIScrollViewDelegate {
         let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
         let nextOrderAvailable = (self.viewModel.history as? [HistoryModel])?.last?.nextOrderAvailable
         if nextOrderAvailable == true && distance < 200 {
-            self.viewModel.history.append(LoadingType.loadmore.rawValue as IGListDiffable)
+            self.viewModel.history.append(LoadingType.loadmore.rawValue as ListDiffable)
             self.viewModel.getListHistoryService()
             adapter.performUpdates(animated: true, completion: nil)
         }

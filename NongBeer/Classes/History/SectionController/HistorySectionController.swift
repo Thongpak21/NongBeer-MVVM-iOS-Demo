@@ -9,10 +9,10 @@
 import UIKit
 import IGListKit
 
-class HistorySectionController: IGListSectionController, IGListSectionType {
+class HistorySectionController: ListSectionController {
     var object: HistoryModel?
     
-    func numberOfItems() -> Int {
+    override func numberOfItems() -> Int {
         return (object?.listOrders.count)!
     }
     override init() {
@@ -23,12 +23,12 @@ class HistorySectionController: IGListSectionController, IGListSectionType {
         self.minimumLineSpacing = 5
     }
     
-    func sizeForItem(at index: Int) -> CGSize {
+    override func sizeForItem(at index: Int) -> CGSize {
         let width = collectionContext?.containerSize.width ?? 0
         return CGSize(width: width - 20, height: 60)
     }
     
-    func cellForItem(at index: Int) -> UICollectionViewCell {
+    override func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext?.dequeueReusableCell(withNibName: HistoryCollectionViewCell.identifier, bundle: nil, for: self, at: index) as! HistoryCollectionViewCell
         cell.dateLabel.text = (object?.listOrders[index].date)! + " at " + (object?.listOrders[index].time)!
         cell.unitLabel.text = (object?.listOrders[index].totalAmount?.toString)! + " bottles of beers."
@@ -36,11 +36,11 @@ class HistorySectionController: IGListSectionController, IGListSectionType {
         return cell
     }
     
-    func didUpdate(to object: Any) {
+    override func didUpdate(to object: Any) {
         self.object = object as? HistoryModel
     }
     
-    func didSelectItem(at index: Int) {
+    override func didSelectItem(at index: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateVC(HistoryDetailViewController.self)
         vc?.object = [(self.object?.listOrders[index])!]
